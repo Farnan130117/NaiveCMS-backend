@@ -13,6 +13,7 @@ use function GuzzleHttp\Promise\all;
 use Exception;
 use Laravel\Passport\RefreshToken;
 use Laravel\Passport\Token;
+use Illuminate\Support\Facades\Route;
 
 class AuthController extends Controller
 {
@@ -104,5 +105,24 @@ class AuthController extends Controller
         auth()->user()->token()->revoke();
         $message = 'You are logged out.';
         return sendResponse($logout_userinfo, $message);
+    }
+
+    public function rolecheck(Request $request){
+
+        $userinfo['name']=Auth::user()->name;
+
+        $message = 'Your role is permitted to access this link.';
+        return sendResponse($userinfo, $message);
+    }
+
+    public function permissioncheck(Request $request){
+
+        #$userinfo['name']=Auth::user()->email;
+       // $url = Route::getCurrentRoute()->getActionName();//$request->url();
+        $url = Route::getCurrentRoute()->getName();
+       // $specific_user=User::find($request->id);
+
+        $message = 'Permission Granted.';
+        return sendResponse($url, $message);
     }
 }

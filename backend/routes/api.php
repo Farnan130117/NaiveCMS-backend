@@ -31,6 +31,12 @@ Route::prefix('v1')->group(function () {
 
     Route::middleware('auth:api')->group(function (){
         Route::post('/logout', [AuthController::class, 'logout']);
+
+        Route::middleware([\App\Http\Middleware\CheckRole::class])->group(function() {
+            Route::post('/rolecheck', [AuthController::class, 'rolecheck'])->name('rolechecker');
+            Route::post('/permissioncheck/{id}', [AuthController::class, 'permissioncheck'])->name('permissionchecker');
+
+        });
     });
 
 });
